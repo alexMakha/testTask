@@ -264,9 +264,9 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
 
     public void addToEndWithGlue(List<Week> _week) {
         int firstNewDay = 0;
-        for (int j = 0; j < 7; j++) {
-            if (_week.get(0).get(j) != null) {
-                firstNewDay = _week.get(0).get(j).getWeekDay();
+        for (int day = 0; day < 7; day++) {
+            if (_week.get(0).get(day) != null) {
+                firstNewDay = _week.get(0).get(day).getWeekDay();
                 break;
             }
         }
@@ -274,38 +274,38 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
             itemList.addAll(_week);
         } else {
             Week week = _week.get(0);
-            for (int i = firstNewDay; i < 7; i++) {
-                itemList.get(itemList.size() - 1).add(i, week.get(i));
+            for (int day = firstNewDay; day < 7; day++) {
+                itemList.get(itemList.size() - 1).add(day, week.get(day));
             }
             _week.remove(0);
             itemList.addAll(_week);
         }
     }
 
-    public void addToStartWithGlue(List<Week> list) {
+    public void addToStartWithGlue(List<Week> _week) {
         int firstOldDay = 0;
-        for (int j = 6; j >= 0; ) {
-            if (list.get(list.size() - 1).get(j) != null) {
-                firstOldDay = list.get(list.size() - 1).get(j).getWeekDay();
+        for (int day = 6; day >= 0; ) {
+            if (_week.get(_week.size() - 1).get(day) != null) {
+                firstOldDay = _week.get(_week.size() - 1).get(day).getWeekDay();
                 break;
             }
-            j--;
+            day--;
         }
         if (firstOldDay == 6) {
-            for (int i = list.size() - 1; i >= 0; ) {
-                itemList.add(0, list.get(i));
-                i--;
+            for (int day = _week.size() - 1; day >= 0; ) {
+                itemList.add(0, _week.get(day));
+                day--;
             }
         } else {
             Week week = itemList.get(0);
-            for (int i = firstOldDay + 1; i <= 6; i++) {
+            for (int day = firstOldDay + 1; day <= 6; day++) {
 
-                list.get(list.size() - 1).add(i, week.get(i));
+                _week.get(_week.size() - 1).add(day, week.get(day));
             }
             itemList.remove(0);
-            for (int i = list.size() - 1; i >= 0; ) {
-                itemList.add(0, list.get(i));
-                i--;
+            for (int day = _week.size() - 1; day >= 0; ) {
+                itemList.add(0, _week.get(day));
+                day--;
             }
         }
     }
