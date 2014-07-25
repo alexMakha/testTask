@@ -84,7 +84,7 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -97,36 +97,6 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
             holder.thursDay = (RelativeLayout) convertView.findViewById(R.id.rel4);
             holder.friDay = (RelativeLayout) convertView.findViewById(R.id.rel5);
             holder.saturDay = (RelativeLayout) convertView.findViewById(R.id.rel6);
-
-            holder.sunDay.setOnClickListener(this);
-            holder.monDay.setOnClickListener(this);
-            holder.tuesDay.setOnClickListener(this);
-            holder.wednesDay.setOnClickListener(this);
-            holder.thursDay.setOnClickListener(this);
-            holder.friDay.setOnClickListener(this);
-            holder.saturDay.setOnClickListener(this);
-
-
-            holder.sunDay.getLayoutParams().height = mCellWidth;
-            holder.sunDay.getLayoutParams().width = mCellWidth;
-
-            holder.monDay.getLayoutParams().height = mCellWidth;
-            holder.monDay.getLayoutParams().width = mCellWidth;
-
-            holder.tuesDay.getLayoutParams().height = mCellWidth;
-            holder.tuesDay.getLayoutParams().width = mCellWidth;
-
-            holder.wednesDay.getLayoutParams().height = mCellWidth;
-            holder.wednesDay.getLayoutParams().width = mCellWidth;
-
-            holder.thursDay.getLayoutParams().height = mCellWidth;
-            holder.thursDay.getLayoutParams().width = mCellWidth;
-
-            holder.friDay.getLayoutParams().height = mCellWidth;
-            holder.friDay.getLayoutParams().width = mCellWidth;
-
-            holder.saturDay.getLayoutParams().height = mCellWidth;
-            holder.saturDay.getLayoutParams().width = mCellWidth;
 
             holder.sunDayText = (TextView) convertView.findViewById(R.id.day_text0);
             holder.monDayText = (TextView) convertView.findViewById(R.id.day_text1);
@@ -144,120 +114,67 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
             holder.thursDayImage = (ImageView) convertView.findViewById(R.id.day_image4);
             holder.friDayImage = (ImageView) convertView.findViewById(R.id.day_image5);
             holder.saturDayImage = (ImageView) convertView.findViewById(R.id.day_image6);
+
+            holder.weekDates = new ArrayList<TextView>(){{
+                add(holder.sunDayText);
+                add(holder.monDayText);
+                add(holder.tuesDayText);
+                add(holder.wednesDayText);
+                add(holder.thursDayText);
+                add(holder.friDayText);
+                add(holder.saturDayText);
+            }};
+            holder.weekEntry = new ArrayList<RelativeLayout>(){{
+                add(holder.sunDay);
+                add(holder.monDay);
+                add(holder.tuesDay);
+                add(holder.wednesDay);
+                add(holder.thursDay);
+                add(holder.friDay);
+                add(holder.saturDay);
+            }};
+            holder.weekImages = new ArrayList<ImageView>(){{
+                add(holder.sunDayImage);
+                add(holder.monDayImage);
+                add(holder.tuesDayImage);
+                add(holder.wednesDayImage);
+                add(holder.thursDayImage);
+                add(holder.friDayImage);
+                add(holder.saturDayImage);
+            }};
+
+            for (RelativeLayout cell:  holder.weekEntry) {
+                cell.setOnClickListener(this);
+                cell.getLayoutParams().height =
+                        cell.getLayoutParams().width = mCellWidth;
+            }
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
         List<Day> week = new ArrayList<Day>();
         week.addAll(itemList.get(position));
         Day day;
+        for (int dayNumb = 0; dayNumb < 7; dayNumb ++){
+            if (week.get(dayNumb) != null) {
+                day = week.get(dayNumb);
+                holder.weekDates.get(dayNumb).setText(String.valueOf(day.Day));
+                holder.weekEntry.get(dayNumb).setTag(day.Day + "_" + day.Month + "_" + day.Year);
+                Picasso.with(mContext)
+                        .load(day.imgURL)
+                        .error(android.R.drawable.stat_notify_error)
+                        .transform(mDayBackgroundTransformation)
+                        .into(holder.weekImages.get(dayNumb));
+                if (!day.isCurrentMonthDay()) {
+                    holder.weekImages.get(dayNumb).setAlpha(0.2f);
+                } else {
+                    holder.weekImages.get(dayNumb).setAlpha(1.0f);
+                }
+            }
+        }
 
-        if (week.get(0) != null) {
-            day = week.get(0);
-            holder.sunDayText.setText(String.valueOf(day.Day));
-            holder.sunDay.setTag(day.Day + "_" + day.Month + "_" + day.Year);
-            Picasso.with(mContext)
-                    .load(day.imgURL)
-                    .error(android.R.drawable.stat_notify_error)
-                    .transform(mDayBackgroundTransformation)
-                    .into(holder.sunDayImage);
-            if (!day.isCurrentMonthDay()) {
-                holder.sunDayImage.setAlpha(0.2f);
-            } else {
-                holder.sunDayImage.setAlpha(1.0f);
-            }
-
-        }
-        if (week.get(1) != null) {
-            day = week.get(1);
-            holder.monDayText.setText(String.valueOf(day.Day));
-            holder.monDay.setTag(day.Day + "_" + day.Month + "_" + day.Year);
-            Picasso.with(mContext)
-                    .load(day.imgURL)
-                    .error(android.R.drawable.stat_notify_error)
-                    .transform(mDayBackgroundTransformation)
-                    .into(holder.monDayImage);
-            if (!day.isCurrentMonthDay()) {
-                holder.monDayImage.setAlpha(0.2f);
-            } else {
-                holder.monDayImage.setAlpha(1.0f);
-            }
-        }
-        if (week.get(2) != null) {
-            day = week.get(2);
-            holder.tuesDayText.setText(String.valueOf(day.Day));
-            holder.tuesDay.setTag(day.Day + "_" + day.Month + "_" + day.Year);
-            Picasso.with(mContext)
-                    .load(day.imgURL)
-                    .error(android.R.drawable.stat_notify_error)
-                    .transform(mDayBackgroundTransformation)
-                    .into(holder.tuesDayImage);
-            if (!day.isCurrentMonthDay()) {
-                holder.tuesDayImage.setAlpha(0.2f);
-            } else {
-                holder.tuesDayImage.setAlpha(1.0f);
-            }
-        }
-        if (week.get(3) != null) {
-            day = week.get(3);
-            holder.wednesDayText.setText(String.valueOf(day.Day));
-            holder.wednesDay.setTag(day.Day + "_" + day.Month + "_" + day.Year);
-            Picasso.with(mContext)
-                    .load(day.imgURL)
-                    .error(android.R.drawable.stat_notify_error)
-                    .transform(mDayBackgroundTransformation)
-                    .into(holder.wednesDayImage);
-            if (!day.isCurrentMonthDay()) {
-                holder.wednesDayImage.setAlpha(0.2f);
-            } else {
-                holder.wednesDayImage.setAlpha(1.0f);
-            }
-        }
-        if (week.get(4) != null) {
-            day = week.get(4);
-            holder.thursDayText.setText(String.valueOf(day.Day));
-            holder.thursDay.setTag(day.Day + "_" + day.Month + "_" + day.Year);
-            Picasso.with(mContext)
-                    .load(day.imgURL)
-                    .error(android.R.drawable.stat_notify_error)
-                    .transform(mDayBackgroundTransformation)
-                    .into(holder.thursDayImage);
-            if (!day.isCurrentMonthDay()) {
-                holder.thursDayImage.setAlpha(0.2f);
-            } else {
-                holder.thursDayImage.setAlpha(1.0f);
-            }
-        }
-        if (week.get(5) != null) {
-            day = week.get(5);
-            holder.friDayText.setText(String.valueOf(day.Day));
-            holder.friDay.setTag(day.Day + "_" + day.Month + "_" + day.Year);
-            Picasso.with(mContext)
-                    .load(day.imgURL)
-                    .error(android.R.drawable.stat_notify_error)
-                    .transform(mDayBackgroundTransformation)
-                    .into(holder.friDayImage);
-            if (!day.isCurrentMonthDay()) {
-                holder.friDayImage.setAlpha(0.2f);
-            } else {
-                holder.friDayImage.setAlpha(1.0f);
-            }
-        }
-        if (week.get(6) != null) {
-            day = week.get(6);
-            holder.saturDayText.setText(String.valueOf(day.Day));
-            holder.saturDay.setTag(day.Day + "_" + day.Month + "_" + day.Year);
-            Picasso.with(mContext)
-                    .load(day.imgURL)
-                    .error(android.R.drawable.stat_notify_error)
-                    .transform(mDayBackgroundTransformation)
-                    .into(holder.saturDayImage);
-            if (!day.isCurrentMonthDay()) {
-                holder.saturDayImage.setAlpha(0.2f);
-            } else {
-                holder.saturDayImage.setAlpha(1.0f);
-            }
-        }
         return convertView;
 
     }
@@ -389,7 +306,10 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
         TextView sunDayText, monDayText, tuesDayText, wednesDayText, thursDayText, friDayText, saturDayText;
         ImageView sunDayImage, monDayImage, tuesDayImage, wednesDayImage, thursDayImage, friDayImage, saturDayImage;
         RelativeLayout sunDay, monDay, tuesDay, wednesDay, thursDay, friDay, saturDay;
-    }
+        List<TextView> weekDates;
+        List<RelativeLayout> weekEntry;
+        List<ImageView> weekImages;
 
+    }
 
 }
