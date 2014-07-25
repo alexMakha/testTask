@@ -4,6 +4,7 @@ package cs.com.testtask.utils;
 import android.content.Context;
 import android.text.format.Time;
 import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -118,33 +119,14 @@ public class CalendarGenerator {
 
     public static List<Week> getInitData() {
         List<Day> tmpList = new ArrayList<Day>();
+
         currentCalendar.clear();
 
-        tmpList = getPreviousMonthList();
+        tmpList.addAll(getPreviousMonthList());
         tmpList.addAll(getCurrentMonthList());
         tmpList.addAll(getNextMonthList());
 
-        for (int i = 0; i < tmpList.size(); ) {
-            Week week = new Week();
-            int firstDay = tmpList.get(i).getWeekDay();
-            int indexLost = i + (6 - firstDay);
-            int lastDay;
-            if (indexLost <= tmpList.size() - 1) {
-                lastDay = 6;
-            } else {
-                lastDay = tmpList.get(tmpList.size() - 1).getWeekDay();
-            }
-            for (int j = 0; j <= 6; j++) {
-                if (j >= firstDay && j <= lastDay) {
-                    week.add(j, tmpList.get(i));
-                    i++;
-                } else {
-                    week.add(j, null);
-                }
-            }
-            currentCalendar.add(week);
-        }
-        return currentCalendar;
+        return getMonthList(tmpList, currentCalendar);
     }
 
     public static List<Week> getNextWeekMonthList(int month, int year) {
@@ -154,6 +136,10 @@ public class CalendarGenerator {
         Log.v(TAG, "Generator Current Month" + month);
         tmpList = getNextMonthList();
 
+        return getMonthList(tmpList, result);
+    }
+
+    private static List<Week> getMonthList(List<Day> tmpList, List<Week> result) {
         for (int i = 0; i < tmpList.size(); ) {
             Week week = new Week();
             int firstDay = tmpList.get(i).getWeekDay();
@@ -178,31 +164,11 @@ public class CalendarGenerator {
     }
 
     public static List<Week> getPrevWeekMonthList(int month, int year) {
-        List<Day> tempList;
+        List<Day> tmpList;
         List<Week> result = new ArrayList<Week>();
 
         currentMonth.set(1, month, year);
-        tempList = getPreviousMonthList();
-        for (int i = 0; i < tempList.size(); ) {
-            Week week = new Week();
-            int fierstDay = tempList.get(i).getWeekDay();
-            int indexLost = i + (6 - fierstDay);
-            int lastDay;
-            if (indexLost <= tempList.size() - 1) {
-                lastDay = 6;
-            } else {
-                lastDay = tempList.get(tempList.size() - 1).getWeekDay();
-            }
-            for (int j = 0; j <= 6; j++) {
-                if (j >= fierstDay && j <= lastDay) {
-                    week.add(j, tempList.get(i));
-                    i++;
-                } else {
-                    week.add(j, null);
-                }
-            }
-            result.add(week);
-        }
-        return result;
+        tmpList = getPreviousMonthList();
+        return getMonthList(tmpList, result);
     }
 }
