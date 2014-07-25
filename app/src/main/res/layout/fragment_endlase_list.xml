@@ -5,7 +5,7 @@
     tools:context=".MainActivity" >
 
 
-    <com.example.Caldroid.EndllesList.EndlessListView
+    <cs.com.testtask.components.EndlessListView
         android:id="@+id/el"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
