@@ -312,7 +312,7 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
 
     public void setNextMonthToCurrent(final int firstItem, final int count) {
         if (itemList.get(firstItem).get(6) == null) {
-            ((MyApplication) ((MainActivity) mContext).getApplication()).isLoad = false;
+            MyApplication.isLoad = false;
             return;
 
         }
@@ -327,7 +327,7 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
                     super.onPostExecute(aVoid);
                     notifyDataSetChanged();
                     ((TextView) (((MainActivity) mContext).findViewById(R.id.tv_current_month))).setText(getCurrentMonthName() + " " + year);
-                    ((MyApplication) ((MainActivity) mContext).getApplication()).isLoad = false;
+                    MyApplication.isLoad = false;
                 }
 
                 @Override
@@ -357,7 +357,7 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
                 }
             }.execute();
         } else
-            ((MyApplication) ((MainActivity) mContext).getApplication()).isLoad = false;
+            MyApplication.isLoad = false;
     }
 
     public String getCurrentMonthName() {
@@ -379,7 +379,6 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
     public int getNexYear() {
         return mCurrentMonth + 2 > 11 ? mCurrentYear + 1 : mCurrentYear;
     }
-
 
     @Override
     public void onClick(View v) {

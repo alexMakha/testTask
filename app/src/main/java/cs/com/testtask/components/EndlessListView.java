@@ -7,9 +7,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import java.util.List;
-
 import cs.com.testtask.MyApplication;
-import cs.com.testtask.activity.MainActivity;
 import cs.com.testtask.models.Week;
 
 /**
@@ -21,25 +19,22 @@ public class EndlessListView extends ListView implements AbsListView.OnScrollLis
     private EndlessListener listener;
     private EndlessAdapter mAdapter;
     private int oldVisebleItem;
-    private Context ctx;
+
 
     public EndlessListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.setOnScrollListener(this);
-        ctx = context;
 
     }
 
     public EndlessListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setOnScrollListener(this);
-        ctx = context;
     }
 
     public EndlessListView(Context context) {
         super(context);
         this.setOnScrollListener(this);
-        ctx = context;
     }
 
     public void setListener(EndlessListener listener) {
@@ -57,29 +52,23 @@ public class EndlessListView extends ListView implements AbsListView.OnScrollLis
         if (getAdapter().getCount() == 0)
             return;
 
-        int l = visibleItemCount + firstVisibleItem;
+        int lastVisibleWeek = visibleItemCount + firstVisibleItem;
 
-        if (l >= totalItemCount &&
-                !((MyApplication) ((MainActivity) ctx).getApplication()).isLoad) {
-            // It is time to add new data. We call the listener
+        if (lastVisibleWeek >= totalItemCount && !MyApplication.isLoad) {
             this.addFooterView(footer);
-            ((MyApplication) ((MainActivity) ctx).getApplication()).isLoad = true;
+            MyApplication.isLoad = true;
             listener.loadData(true);
-        } else if (firstVisibleItem == 0 &&
-                !((MyApplication) ((MainActivity) ctx).getApplication()).isLoad) {
-
+        } else if (firstVisibleItem == 0 && !MyApplication.isLoad) {
             this.addHeaderView(footer);
-            ((MyApplication) ((MainActivity) ctx).getApplication()).isLoad = true;
+            MyApplication.isLoad = true;
             listener.loadData(false);
         }
 
-        if (!((MyApplication) ((MainActivity) ctx).getApplication()).isLoad) {
-            ((MyApplication) ((MainActivity) ctx).getApplication()).isLoad = true;
+        if (!MyApplication.isLoad) {
+            MyApplication.isLoad = true;
             mAdapter.setNextMonthToCurrent(firstVisibleItem, visibleItemCount);
-
         }
     }
-
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -89,7 +78,6 @@ public class EndlessListView extends ListView implements AbsListView.OnScrollLis
         LayoutInflater inflater = (LayoutInflater) super.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         footer = inflater.inflate(resId, null);
         this.addFooterView(footer);
-
     }
 
     @Override
@@ -106,34 +94,26 @@ public class EndlessListView extends ListView implements AbsListView.OnScrollLis
 
 
     public void addNewDataBottom(List<Week> data) {
-
         this.removeFooterView(footer);
         mAdapter.addToEndWithGlue(data);
         mAdapter.notifyDataSetChanged();
-
-        ((MyApplication) ((MainActivity) ctx).getApplication()).isLoad = false;
-
+        MyApplication.isLoad = false;
     }
 
     public void addNewDataTop(List<Week> data) {
         this.removeHeaderView(footer);
         mAdapter.addToStartWithGlue(data);
-
-
         int index = this.getFirstVisiblePosition() + data.size() - 1;
         View v = this.getChildAt(0);
         int top = (v == null) ? 0 : v.getTop();
         mAdapter.notifyDataSetChanged();
-
         this.setSelectionFromTop(index, top);
-        ((MyApplication) ((MainActivity) ctx).getApplication()).isLoad = false;
-
+        MyApplication.isLoad = false;
     }
 
     public EndlessListener setListener() {
         return listener;
     }
-
 
     public static interface EndlessListener {
         public void loadData(boolean isDownScroll);
