@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.format.Time;
 import android.util.Log;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import cs.com.testtask.R;
@@ -15,18 +16,17 @@ import cs.com.testtask.models.Week;
  * Created by AlexCs on 6/19/2014.
  */
 public class CalendarGenerator {
-    private static ArrayList<Day> currentCalendarList = new ArrayList<Day>();
-    private static ArrayList<Day> previousCalendarList = new ArrayList<Day>();
-    private static ArrayList<Day> nextCalendarList = new ArrayList<Day>();
-    private static ArrayList<Week> currentCalendar = new ArrayList<Week>();
+    private static List<Day> currentCalendarList = new ArrayList<Day>();
+    private static List<Day> previousCalendarList = new ArrayList<Day>();
+    private static List<Day> nextCalendarList = new ArrayList<Day>();
+    private static List<Week> currentCalendar = new ArrayList<Week>();
     private static Time currentMonth = new Time();
 
-    private static String TAG = "CC_MOB";
+    private static String TAG = "ALEX_MOB";
 
     private static String[] imageURLs;
 
-
-    public static ArrayList<Day> getCurrentMonthList() {
+    public static List<Day> getCurrentMonthList() {
         Time today = new Time();
         currentCalendarList.clear();
         today = currentMonth;
@@ -41,15 +41,16 @@ public class CalendarGenerator {
             today.set(i, month, year);
             Day day = new Day(today.toMillis(false), imageURLs[random.nextInt(randomID)], true);
             day.getWeekDay();
-            String printString = String.valueOf(day.Day) + " " + String.valueOf(day.Month) + " " + String.valueOf(day.Year) + " " + String.valueOf(day.getWeekDay());
-            Log.v(TAG, printString);
+            StringBuilder sb = new StringBuilder();
+            sb.append(day.Day).append("-").append(day.Month).append("-").append(day.Year).append("-").append(day.getWeekDay());
+            Log.v(TAG, sb.toString());
 
             currentCalendarList.add(day);
         }
         return currentCalendarList;
     }
 
-    public static ArrayList<Day> getPreviousMonthList() {
+    public static List<Day> getPreviousMonthList() {
         Time today = new Time();
         previousCalendarList.clear();
         today.set(currentMonth.monthDay, currentMonth.month, currentMonth.year);
@@ -70,14 +71,15 @@ public class CalendarGenerator {
         for (int i = 1; i <= monthDay; i++) {
             today.set(i, month, year);
             Day day = new Day(today.toMillis(false), imageURLs[random.nextInt(randomID)], false);
-            String printString = String.valueOf(day.Day) + " " + String.valueOf(day.Month) + " " + String.valueOf(day.Year) + day.imgURL;
-            Log.v(TAG, printString);
+            StringBuilder sb = new StringBuilder();
+            sb.append(day.Day).append("-").append(day.Month).append("-").append(day.Year).append(day.imgURL);
+            Log.v(TAG, sb.toString());
             previousCalendarList.add(day);
         }
         return previousCalendarList;
     }
 
-    public static ArrayList<Day> getNextMonthList() {
+    public static List<Day> getNextMonthList() {
         Time today = new Time();
         nextCalendarList.clear();
         today.set(currentMonth.monthDay, currentMonth.month, currentMonth.year);
@@ -99,8 +101,9 @@ public class CalendarGenerator {
         for (int i = 1; i <= monthDay; i++) {
             today.set(i, month, year);
             Day day = new Day(today.toMillis(false), imageURLs[random.nextInt(randomID)], false);
-            String printString = String.valueOf(day.Day) + " " + String.valueOf(day.Month) + " " + String.valueOf(day.Year) + day.imgURL;
-            Log.v(TAG, printString);
+            StringBuilder sb = new StringBuilder();
+            sb.append(day.Day).append("-").append(day.Month).append("-").append(day.Year).append(day.imgURL);
+            Log.v(TAG, sb.toString());
             nextCalendarList.add(day);
         }
 
@@ -111,32 +114,29 @@ public class CalendarGenerator {
     public static void toCurrentMonth(Context context) {
         imageURLs = context.getResources().getStringArray(R.array.image_url);
         currentMonth.setToNow();
-
     }
 
-
-    public static ArrayList<Week> getInitData() {
-        ArrayList<Day> tempList = new ArrayList<Day>();
+    public static List<Week> getInitData() {
+        List<Day> tmpList = new ArrayList<Day>();
         currentCalendar.clear();
 
-        tempList = getPreviousMonthList();
-        tempList.addAll(getCurrentMonthList());
-        tempList.addAll(getNextMonthList());
+        tmpList = getPreviousMonthList();
+        tmpList.addAll(getCurrentMonthList());
+        tmpList.addAll(getNextMonthList());
 
-
-        for (int i = 0; i < tempList.size(); ) {
+        for (int i = 0; i < tmpList.size(); ) {
             Week week = new Week();
-            int fierstDay = tempList.get(i).getWeekDay();
-            int indexLost = i + (6 - fierstDay);
+            int firstDay = tmpList.get(i).getWeekDay();
+            int indexLost = i + (6 - firstDay);
             int lastDay;
-            if (indexLost <= tempList.size() - 1) {
+            if (indexLost <= tmpList.size() - 1) {
                 lastDay = 6;
             } else {
-                lastDay = tempList.get(tempList.size() - 1).getWeekDay();
+                lastDay = tmpList.get(tmpList.size() - 1).getWeekDay();
             }
             for (int j = 0; j <= 6; j++) {
-                if (j >= fierstDay && j <= lastDay) {
-                    week.add(j, tempList.get(i));
+                if (j >= firstDay && j <= lastDay) {
+                    week.add(j, tmpList.get(i));
                     i++;
                 } else {
                     week.add(j, null);
@@ -147,26 +147,26 @@ public class CalendarGenerator {
         return currentCalendar;
     }
 
-    public static ArrayList<Week> getNextWeekMonthList(int month, int year) {
-        ArrayList<Day> tempList = new ArrayList<Day>();
-        ArrayList<Week> result = new ArrayList<Week>();
+    public static List<Week> getNextWeekMonthList(int month, int year) {
+        List<Day> tmpList;
+        List<Week> result = new ArrayList<Week>();
         currentMonth.set(1, month, year);
-        Log.v("BrusD", "Generator Current Month" + month);
-        tempList = getNextMonthList();
+        Log.v(TAG, "Generator Current Month" + month);
+        tmpList = getNextMonthList();
 
-        for (int i = 0; i < tempList.size(); ) {
+        for (int i = 0; i < tmpList.size(); ) {
             Week week = new Week();
-            int firstDay = tempList.get(i).getWeekDay();
+            int firstDay = tmpList.get(i).getWeekDay();
             int indexLost = i + (6 - firstDay);
             int lastDay;
-            if (indexLost <= tempList.size() - 1) {
+            if (indexLost <= tmpList.size() - 1) {
                 lastDay = 6;
             } else {
-                lastDay = tempList.get(tempList.size() - 1).getWeekDay();
+                lastDay = tmpList.get(tmpList.size() - 1).getWeekDay();
             }
             for (int j = 0; j <= 6; j++) {
                 if (j >= firstDay && j <= lastDay) {
-                    week.add(j, tempList.get(i));
+                    week.add(j, tmpList.get(i));
                     i++;
                 } else {
                     week.add(j, null);
@@ -177,9 +177,9 @@ public class CalendarGenerator {
         return result;
     }
 
-    public static ArrayList<Week> getPrevWeekMonthList(int month, int year) {
-        ArrayList<Day> tempList = new ArrayList<Day>();
-        ArrayList<Week> result = new ArrayList<Week>();
+    public static List<Week> getPrevWeekMonthList(int month, int year) {
+        List<Day> tempList;
+        List<Week> result = new ArrayList<Week>();
 
         currentMonth.set(1, month, year);
         tempList = getPreviousMonthList();
