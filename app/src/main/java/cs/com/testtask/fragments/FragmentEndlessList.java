@@ -67,7 +67,7 @@ public class FragmentEndlessList extends Fragment implements EndlessListView.End
         mListView.setListener(this);
     }
 
-    private ArrayList<Week> initFirstList() {
+    private List<Week> initFirstList() {
         CalendarGenerator.toCurrentMonth(mActivity);
         return CalendarGenerator.getInitData();
     }
@@ -79,8 +79,8 @@ public class FragmentEndlessList extends Fragment implements EndlessListView.End
         fl.execute();
     }
 
-    private ArrayList<Week> extendList() {
-        ArrayList<Week> result;
+    private List<Week> extendList() {
+        List<Week> result;
         if (isDawnScroll) {
             result = CalendarGenerator
                     .getNextWeekMonthList(mListAdapter.getNextMonth(), mListAdapter.getNexYear());

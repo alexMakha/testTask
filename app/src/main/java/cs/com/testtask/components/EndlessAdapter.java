@@ -28,7 +28,7 @@ import cs.com.testtask.models.Week;
 public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickListener {
 
     int year;
-    private ArrayList<Week> itemList;
+    private List<Week> itemList;
     private Context mContext;
     private int mCellWidth;
     Transformation mDayBackgroundTransformation = new Transformation() {
@@ -54,7 +54,7 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
     private String mCurrentMonthName;
     public int mCurrentYear;
 
-    public EndlessAdapter(Context ctx, ArrayList<Week> itemList, int layoutId, int cellWidth) {
+    public EndlessAdapter(Context ctx, List<Week> itemList, int layoutId, int cellWidth) {
         super(ctx, layoutId, itemList);
         this.itemList = itemList;
         this.mContext = ctx;
