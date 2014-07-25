@@ -12,7 +12,7 @@ public class Day {
 
     public String imgURL;
     public int Day;
-    public int Month; // 0-11
+    public int Month;
     public int Year;
 
     private int dayOfWeek;
