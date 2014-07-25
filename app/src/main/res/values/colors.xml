@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="light_background">#44383838</color>
+    <color name="orange">#ff8810</color>
+    <color name="white">#eeffffff</color>
+    <color name="red_action_bar">#99ff0000</color>
+    <color name="light_grey_background">#22383838</color>
+    <color name="light_grey_item_background">#ffa8a8a8</color>
+
+</resources>

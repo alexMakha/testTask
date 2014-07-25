@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_date">25sp</dimen>
+    <dimen name="item_text_marge_right">5dp</dimen>
+    <dimen name="day_of_week_height">20dp</dimen>
+    <dimen name="header_text_size">25sp</dimen>
+</resources>
