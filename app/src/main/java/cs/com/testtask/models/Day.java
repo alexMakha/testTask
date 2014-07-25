@@ -38,6 +38,7 @@ public class Day {
     public int getWeekDay(){
         return dayOfWeek;
     }
+
     public boolean isCurrentMonthDay(){
         return isCurrentMonthDay;
     }
