@@ -24,7 +24,7 @@ import cs.com.testtask.utils.CalendarGenerator;
 /**
  * Created by AlexCs on 6/19/2014.
  */
-public class FragmentEndlessList extends Fragment implements EndlessListView.EndlessListener{
+public class CalendarFragment extends Fragment implements EndlessListView.EndlessListener{
 
     private EndlessListView mListView;
     private Activity mActivity;

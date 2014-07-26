@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import cs.com.testtask.R;
-import cs.com.testtask.fragments.FragmentEndlessList;
+import cs.com.testtask.fragments.CalendarFragment;
 
 public class MainActivity extends Activity {
-    Fragment mCalendarFragment;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +24,10 @@ public class MainActivity extends Activity {
     }
 
     private void addFragmentCalendar() {
-        mCalendarFragment = new FragmentEndlessList();
+        Fragment calendarFragment = new CalendarFragment();
         FragmentTransaction fragmentTransaction;
         fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.frameContainer_M, mCalendarFragment);
+        fragmentTransaction.add(R.id.frameContainer_M, calendarFragment);
         fragmentTransaction.commit();
     }
 
