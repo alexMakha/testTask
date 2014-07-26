@@ -43,7 +43,7 @@ public class CalendarGenerator {
             Day day = new Day(today.toMillis(false), imageURLs[random.nextInt(randomID)], true);
             day.getWeekDay();
             StringBuilder sb = new StringBuilder();
-            sb.append(day.Day).append("-").append(day.Month).append("-").append(day.Year).append("-").append(day.getWeekDay());
+            sb.append(day.day).append("-").append(day.month).append("-").append(day.year).append("-").append(day.getWeekDay());
             Log.v(TAG, sb.toString());
 
             currentCalendarList.add(day);
@@ -52,48 +52,26 @@ public class CalendarGenerator {
     }
 
     public static List<Day> getPreviousMonthList() {
-        Time today = new Time();
-        previousCalendarList.clear();
-        today.set(currentMonth.monthDay, currentMonth.month, currentMonth.year);
-        int randomID = imageURLs.length;
-        Random random = new Random();
-        int month;
-        int year;
-        if (today.month == 0) {
-            month = 11;
-            year = today.year - 1;
-        } else {
-            month = today.month - 1;
-            year = today.year;
-        }
-        today.set(1, month, year);
-
-        int monthDay = today.getActualMaximum(Time.MONTH_DAY);
-        for (int i = 1; i <= monthDay; i++) {
-            today.set(i, month, year);
-            Day day = new Day(today.toMillis(false), imageURLs[random.nextInt(randomID)], false);
-            StringBuilder sb = new StringBuilder();
-            sb.append(day.Day).append("-").append(day.Month).append("-").append(day.Year).append(day.imgURL);
-            Log.v(TAG, sb.toString());
-            previousCalendarList.add(day);
-        }
-        return previousCalendarList;
+        return fillCalendarList(previousCalendarList, 0, 11, -1);
     }
 
     public static List<Day> getNextMonthList() {
+        return fillCalendarList(nextCalendarList, 11, 0, 1);
+    }
+
+    private static List<Day> fillCalendarList(List<Day> calendarList, int startMonth, int endMonth, int delta) {
         Time today = new Time();
-        nextCalendarList.clear();
+        calendarList.clear();
         today.set(currentMonth.monthDay, currentMonth.month, currentMonth.year);
         int randomID = imageURLs.length;
         Random random = new Random();
-
         int month;
         int year;
-        if (today.month == 11) {
-            month = 0;
-            year = today.year + 1;
+        if (today.month == startMonth) {
+            month = endMonth;
+            year = today.year + delta;
         } else {
-            month = today.month + 1;
+            month = today.month + delta;
             year = today.year;
         }
         today.set(1, month, year);
@@ -103,14 +81,12 @@ public class CalendarGenerator {
             today.set(i, month, year);
             Day day = new Day(today.toMillis(false), imageURLs[random.nextInt(randomID)], false);
             StringBuilder sb = new StringBuilder();
-            sb.append(day.Day).append("-").append(day.Month).append("-").append(day.Year).append(day.imgURL);
+            sb.append(day.day).append("-").append(day.month).append("-").append(day.year).append(day.imgURL);
             Log.v(TAG, sb.toString());
-            nextCalendarList.add(day);
+            calendarList.add(day);
         }
-
-        return nextCalendarList;
+        return calendarList;
     }
-
 
     public static void toCurrentMonth(Context context) {
         imageURLs = context.getResources().getStringArray(R.array.image_url);
@@ -133,7 +109,7 @@ public class CalendarGenerator {
         List<Day> tmpList;
         List<Week> result = new ArrayList<Week>();
         currentMonth.set(1, month, year);
-        Log.v(TAG, "Generator Current Month" + month);
+        Log.v(TAG, "Generator Current month" + month);
         tmpList = getNextMonthList();
 
         return getMonthList(tmpList, result);

@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
-import java.util.ArrayList;
+
 import java.util.List;
+
 import cs.com.testtask.R;
-import cs.com.testtask.activity.MainActivity;
 import cs.com.testtask.components.EndlessAdapter;
 import cs.com.testtask.components.EndlessListView;
 import cs.com.testtask.models.Week;
@@ -45,7 +45,7 @@ public class FragmentEndlessList extends Fragment implements EndlessListView.End
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_endlase_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_endless_list, container, false);
         mListView = (EndlessListView) view.findViewById(R.id.el);
         mListView.setFastScrollEnabled(false);
         mActivity = getActivity();

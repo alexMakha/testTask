@@ -11,9 +11,9 @@ public class Day {
     private static Time date = new Time();;
 
     public String imgURL;
-    public int Day;
-    public int Month;
-    public int Year;
+    public int day;
+    public int month;
+    public int year;
 
     private int dayOfWeek;
     private boolean isCurrentMonthDay;
@@ -23,9 +23,9 @@ public class Day {
         this.date.set(dateInMilliseconds);
         this.imgURL = imgURL;
 
-        this.Day = date.monthDay;
-        this.Month =  date.month;
-        this.Year = date.year;
+        this.day = date.monthDay;
+        this.month =  date.month;
+        this.year = date.year;
         this.dayOfWeek = date.weekDay;
         this.isCurrentMonthDay = isCurrMonthDay;
 

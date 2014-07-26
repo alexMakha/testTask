@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 
     private View initializeActionBar() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.calendr_action_bar, null);
+        View view = inflater.inflate(R.layout.calendar_action_bar, null);
         if (view != null) {
             TextView tvCurrentName = (TextView) view.findViewById(R.id.tvActionCurrent);
             tvCurrentName.setText(getString(R.string.the_boys));
@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowCustomEnabled(true);
             if (customView == null)
-                actionBar.setCustomView(R.layout.calendr_action_bar);
+                actionBar.setCustomView(R.layout.calendar_action_bar);
             else
                 actionBar.setCustomView(customView);
         }

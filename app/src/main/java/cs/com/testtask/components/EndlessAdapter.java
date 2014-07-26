@@ -1,5 +1,6 @@
 package cs.com.testtask.components;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -63,8 +64,8 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
         this.mContext = ctx;
         this.mCellWidth = cellWidth;
         if (itemList.size() > 0) {
-            mCurrentMonth = itemList.get(0).get(6).Month;
-            mCurrentYear = itemList.get(0).get(6).Year;
+            mCurrentMonth = itemList.get(0).get(6).month;
+            mCurrentYear = itemList.get(0).get(6).year;
             mCurrentMonthName = itemList.get(8).get(6).getMonthName();
         }
     }
@@ -116,8 +117,8 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
         for (int idx = 0; idx <= 6; idx++) {
             if (week.get(idx) != null) {
                 day = week.get(idx);
-                daysHolder.get(idx).textView.setText(String.valueOf(day.Day));
-                daysHolder.get(idx).relativeLayout.setTag(day.Day + "_" + day.Month + "_" + day.Year);
+                daysHolder.get(idx).textView.setText(String.valueOf(day.day));
+                daysHolder.get(idx).relativeLayout.setTag(day.day + "_" + day.month + "_" + day.year);
 
                 Picasso.with(mContext)
                         .load(day.imgURL)
@@ -200,8 +201,8 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
             return;
 
         }
-        final int itemMonth = itemList.get(firstItem).get(6).Month;
-        mCurrentYear = itemList.get(firstItem).get(6).Year;
+        final int itemMonth = itemList.get(firstItem).get(6).month;
+        mCurrentYear = itemList.get(firstItem).get(6).year;
         Log.v("cs_cs", "mCurrentMonth: " + mCurrentMonth + " ; item month: " + itemMonth);
         if (mCurrentMonth != itemMonth) {
 
@@ -210,7 +211,7 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
                     notifyDataSetChanged();
-                    ((TextView) (((MainActivity) mContext).findViewById(R.id.tv_current_month))).setText(getCurrentMonthName() + " " + year);
+                    ((TextView) ((Activity) mContext).findViewById(R.id.tv_current_month)).setText(getCurrentMonthName() + " " + year);
                     MyApplication.isLoad = false;
                 }
 
@@ -225,11 +226,11 @@ public class EndlessAdapter extends ArrayAdapter<Week> implements View.OnClickLi
                                 if (itemMonth == 11)
                                     visibleMonth = 0;
 
-                                if (day.Month != visibleMonth) {
+                                if (day.month != visibleMonth) {
                                     day.setIsCorrentMonthDay(false);
                                 } else {
                                     day.setIsCorrentMonthDay(true);
-                                    year = day.Year;
+                                    year = day.year;
                                     mCurrentMonthName = day.getMonthName();
                                 }
                             }
